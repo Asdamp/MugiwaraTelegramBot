@@ -4,7 +4,8 @@ import logging
 import random
 import urllib
 import urllib2
-
+import sys
+import codecs
 # for sending images
 #from PIL import Image
 import multipart
@@ -64,6 +65,7 @@ class SetWebhookHandler(webapp2.RequestHandler):
 
 class WebhookHandler(webapp2.RequestHandler):
     def post(self):
+    
         urlfetch.set_default_fetch_deadline(60)
         body = json.loads(self.request.body)
         logging.info('request body:')
@@ -78,7 +80,7 @@ class WebhookHandler(webapp2.RequestHandler):
         fr = message.get('from')
         chat = message['chat']
         chat_id = chat['id']
-
+        nickname = fr['username']
         if not text:
             logging.info('no text')
             return
@@ -88,8 +90,8 @@ class WebhookHandler(webapp2.RequestHandler):
                 resp = urllib2.urlopen(BASE_URL + 'sendMessage', urllib.urlencode({
                     'chat_id': str(chat_id),
                     'text': msg.encode('utf-8'),
-                    'disable_web_page_preview': 'true',
                     'reply_to_message_id': str(message_id),
+                    'disable_web_page_preview': 'true',
                 })).read()
             elif img:
                 resp = multipart.post_multipart(BASE_URL + 'sendPhoto', [
@@ -104,43 +106,48 @@ class WebhookHandler(webapp2.RequestHandler):
 
             logging.info('send response:')
             logging.info(resp)
+        def send(msg=None, img=None):
+            if msg:
+                resp = urllib2.urlopen(BASE_URL + 'sendMessage', urllib.urlencode({
+                    'chat_id': str(chat_id),
+                    'text': msg.encode('utf-8'),
+                    'disable_web_page_preview': 'true',
+                })).read()
+            elif img:
+                resp = multipart.post_multipart(BASE_URL + 'sendPhoto', [
+                    ('chat_id', str(chat_id)),
+                    ('reply_to_message_id', str(message_id)),
+                ], [
+                    ('photo', 'image.jpg', img),
+                ])
+            else:
+                logging.error('no msg or img specified')
+                resp = None
 
+            logging.info('send response:')
+            logging.info(resp)
         if text.startswith('/'):
             if text == '/start':
-                reply('Bot abilitato')
+                send('Bot abilitato')
                 setEnabled(chat_id, True)
             elif text == '/stop':
-                reply('Bot disabilitato')
+                send('Bot disabilitato')
                 setEnabled(chat_id, False)
-            elif text == '/regolamento':
-                regFile=open ("regolamento.txt", "r")
-                msg = regFile.read();
-                reply(msg)
-            else:
-                reply('What command?')
+            elif text == '/regolamento' or text=='/regolamento@MugiwaraBot':
+                regFile=codecs.open ("regolamento.txt", "r","utf-8")
+                msg = regFile.read()
+                send(msg)
+            elif text == '/help' or text=='/help@MugiwaraBot':
+                msg=u"Questo e' un bot di utilita' per il clan Mugiwara. Ulteriori funzioni verranno aggiunte in futuro Lista comandi\n\n /regolamento - Posta il regolamento del clan".encode("utf-8");
+                send(msg)
 
         # CUSTOMIZE FROM HERE
 
-        elif 'who are you' in text:
-            reply('telebot starter kit, created by yukuku: https://github.com/yukuku/telebot')
-        elif 'what time' in text:
-            reply('look at the top-right corner of your screen!')
-        else:
-            if getEnabled(chat_id):
-                try:
-                    resp1 = json.load(urllib2.urlopen('http://www.simsimi.com/requestChat?lc=en&ft=1.0&req=' + urllib.quote_plus(text.encode('utf-8'))))
-                    back = resp1.get('res')
-                except urllib2.HTTPError, err:
-                    logging.error(err)
-                    back = str(err)
-                if not back:
-                    reply('okay...')
-                elif 'I HAVE NO RESPONSE' in back:
-                    reply('you said something with no meaning')
-                else:
-                    reply(back)
-            else:
-                logging.info('not enabled for chat_id {}'.format(chat_id))
+        elif 'a cas' in text:
+            reply('@'+nickname+' la vuoi finire di spammare?')
+        #elif 'what time' in text:
+        #    reply('look at the top-right corner of your screen!')
+       
 
 
 app = webapp2.WSGIApplication([
