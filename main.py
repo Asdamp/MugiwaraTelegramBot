@@ -6,6 +6,9 @@ import urllib
 import urllib2
 import sys
 import codecs
+import datetime
+from google.appengine.ext import db
+from google.appengine.api import users
 # for sending images
 #from PIL import Image
 import multipart
@@ -40,6 +43,9 @@ def getEnabled(chat_id):
         return es.enabled
     return False
 
+class Player(db.Model):
+    name = db.StringProperty(required=True)
+    ban_until = db.DateProperty()
 
 # ================================
 
@@ -84,7 +90,21 @@ class WebhookHandler(webapp2.RequestHandler):
         if not text:
             logging.info('no text')
             return
-
+        def ban(user_tag,weeks):
+            pl=Player(user_tag)
+            today=date.today
+            d = datetime.timedelta(days=(weeks*7))
+            ban_date=today+d
+            pl.ban_until=ban_date
+            pl.put()
+        def get_banned():
+            today=date.today
+            banned = db.GqlQuery("SELECT * FROM Player WHERE ban_until> DATETIME( :1, :2, :3)", today.year,today.month,today.day)
+            for p in banned:
+                n=p.name
+                b=p.ban_until.strftime("%y/%m/%d")
+                msg=msg+"/n"+n+"   "+b
+            return msg
         def reply(msg=None, img=None):
             if msg:
                 resp = urllib2.urlopen(BASE_URL + 'sendMessage', urllib.urlencode({
@@ -137,16 +157,15 @@ class WebhookHandler(webapp2.RequestHandler):
                 regFile=codecs.open ("regolamento.txt", "r","utf-8")
                 msg = regFile.read()
                 send(msg)
+            elif text == '/warban':
+                ban("@asdamp", 2)
+            elif text == '/dbg':
+                send(get_banned())
             elif text == '/help' or text=='/help@MugiwaraBot':
                 msg=u"Questo e' un bot di utilita' per il clan Mugiwara. Ulteriori funzioni verranno aggiunte in futuro Lista comandi\n\n /regolamento - Posta il regolamento del clan".encode("utf-8");
                 send(msg)
 
-        # CUSTOMIZE FROM HERE
-
-        elif 'a cas' in text:
-            reply('@'+nickname+' la vuoi finire di spammare?')
-        #elif 'what time' in text:
-        #    reply('look at the top-right corner of your screen!')
+        
        
 
 
