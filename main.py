@@ -105,27 +105,6 @@ class WebhookHandler(webapp2.RequestHandler):
                 b=p.ban_until.strftime("%y/%m/%d")
                 msg=msg+"/n"+n+"   "+b
             return msg
-        def reply(msg=None, img=None):
-            if msg:
-                resp = urllib2.urlopen(BASE_URL + 'sendMessage', urllib.urlencode({
-                    'chat_id': str(chat_id),
-                    'text': msg.encode('utf-8'),
-                    'reply_to_message_id': str(message_id),
-                    'disable_web_page_preview': 'true',
-                })).read()
-            elif img:
-                resp = multipart.post_multipart(BASE_URL + 'sendPhoto', [
-                    ('chat_id', str(chat_id)),
-                    ('reply_to_message_id', str(message_id)),
-                ], [
-                    ('photo', 'image.jpg', img),
-                ])
-            else:
-                logging.error('no msg or img specified')
-                resp = None
-
-            logging.info('send response:')
-            logging.info(resp)
         def send(msg=None, img=None):
             if msg:
                 resp = urllib2.urlopen(BASE_URL + 'sendMessage', urllib.urlencode({
@@ -154,7 +133,7 @@ class WebhookHandler(webapp2.RequestHandler):
                 send('Bot disabilitato')
                 setEnabled(chat_id, False)
             elif text == '/regolamento' or text=='/regolamento@MugiwaraBot':
-                regFile=codecs.open ("regolamento.txt", "r","utf-8")
+                regFile=codecs.open("regolamento.txt", "r","utf-8")
                 msg = regFile.read()
                 send(msg)
             elif text == '/warban':
@@ -164,9 +143,6 @@ class WebhookHandler(webapp2.RequestHandler):
             elif text == '/help' or text=='/help@MugiwaraBot':
                 msg=u"Questo e' un bot di utilita' per il clan Mugiwara. Ulteriori funzioni verranno aggiunte in futuro Lista comandi\n\n /regolamento - Posta il regolamento del clan".encode("utf-8");
                 send(msg)
-
-        
-       
 
 
 app = webapp2.WSGIApplication([
