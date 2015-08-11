@@ -11,6 +11,7 @@ public class MugiwaraJavaTelegramBotServlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Bot avviato");
 		TelegramBot bot = new MugiwaraBot(false);
+		bot.equals(bot);
 	    bot.start();
 	}
 	
