@@ -5,9 +5,11 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Scanner;
-
+import com.google.appengine.api.log.*;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.*;
+
+import org.mortbay.log.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,10 +33,8 @@ public class MugiwaraJavaTelegramBotServlet extends HttpServlet {
 		ServletInputStream in=req.getInputStream();
 		String json=readAll(in);
 		Gson gson=new Gson();
-		Type t=new TypeToken<ApiResult<List<Update>>>() {}.getType();
-		ApiResult<List<Update>> res=gson.fromJson(json, t);
-		List<Update> upd=res.getResult();
-		bot.notifyNewUpdates(upd);
+		Update upd=gson.fromJson(json, Update.class);
+		bot.notifyNewUpdate(upd);
 	}
 	private static String readAll(InputStream input) {
         Scanner scanner = new Scanner(input);

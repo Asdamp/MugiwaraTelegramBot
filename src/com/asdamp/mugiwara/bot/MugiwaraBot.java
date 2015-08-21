@@ -28,6 +28,7 @@ public class MugiwaraBot extends TelegramBot {
     public void handleStart(Message message) {
         sendMessage(message.getChat().getId(), "Bot abilitato");
     }
+    
     @CommandHandler("help")
     public void handleHelp(Message message) {
         sendMessage(message.getChat().getId(), help);
@@ -38,7 +39,7 @@ public class MugiwaraBot extends TelegramBot {
     	Scanner sc;
 		if (regolamento == null) {
 			try {
-				regolamento = readAll(new FileInputStream("Regolamento.txt"));
+				regolamento = readAll(new FileInputStream("regolamento.txt"));
 			}
 
 			catch (FileNotFoundException e) {
@@ -52,7 +53,7 @@ public class MugiwaraBot extends TelegramBot {
 
     }
 	private static String readAll(InputStream input) {
-		Scanner scanner = new Scanner(input);
+		Scanner scanner = new Scanner(input,"UTF-8");
 		scanner.useDelimiter("\\A");
 		return scanner.hasNext() ? scanner.next() : null;
 	}
@@ -60,7 +61,7 @@ public class MugiwaraBot extends TelegramBot {
     @MessageHandler(contentTypes = Message.Type.TEXT)
     public void handleTextMessage(Message message) {
         log.info(String.format("%s: %s", message.getChat().getId(), message.getText()));
-        replyTo(message, message.getText());
+        //replyTo(message, message.getText());
     }
 
     @DefaultHandler
