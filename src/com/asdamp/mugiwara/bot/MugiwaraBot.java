@@ -18,10 +18,11 @@ import java.util.logging.Logger;
 public class MugiwaraBot extends TelegramBot {
 	private final String help="Questo e' un bot di utilita' per il clan Mugiwara. Ulteriori funzioni verranno aggiunte in futuro Lista comandi\n\n /regolamento - Posta il regolamento del clan"; 
     private String regolamento=null;
+ 
 	private static final Logger log = Logger.getLogger(MugiwaraBot.class.getName());
 
     public MugiwaraBot(boolean async) {
-        super("69301456:AAEPQ0mGZZasxJKTNlEZnEUfOFBhUqxc818", async);
+        super(Token.Token, async);
     }
 
     @CommandHandler("start")
