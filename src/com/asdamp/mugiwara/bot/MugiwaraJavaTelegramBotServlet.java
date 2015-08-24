@@ -25,11 +25,14 @@ public class MugiwaraJavaTelegramBotServlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Bot avviato");
 		bot = new MugiwaraBot(false);
-		bot.equals(bot);
 	    bot.start();
 	}
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		if(bot==null){
+			bot = new MugiwaraBot(false);
+		    bot.start();
+		}
 		ServletInputStream in=req.getInputStream();
 		String json=readAll(in);
 		Gson gson=new Gson();
