@@ -1,0 +1,35 @@
+group 'com.antonioaltieri.mugiwarabot'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'appengine'
+apply plugin: 'war'
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
+    }
+}
+dependencies {
+    compile 'com.antonioaltieri:telegramjavabotapi:1.1'
+    testCompile 'junit:junit:4.12'
+    compile 'javax.servlet:servlet-api:2.5'
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
+
+}
+appengine {
+    downloadSdk = true
+    appcfg {
+        oauth2 = true
+    }
+}
