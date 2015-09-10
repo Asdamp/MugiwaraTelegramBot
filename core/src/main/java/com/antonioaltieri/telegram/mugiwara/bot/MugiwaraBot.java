@@ -61,15 +61,15 @@ public class MugiwaraBot extends TelegramBot {
     public void handleTextMessage(Message message) {
         String text=message.getText();
         System.out.println("Handling text message: " + text);
-        if(containsHashTag(text).equalsIgnoreCase("#formazioneguerra")){
+       /* if(containsHashTag(text).equalsIgnoreCase("#formazioneguerra")){
             replyTo(message,"test");
-        }
+        }*/
     }
     private boolean containsExactIgnoreCase(String text,String word) {
         return Pattern.compile("(?i)\\b" + word + "\\b").matcher(text).find();
     }
 
-    private String containsHashTag(String text) {
+   /* private String containsHashTag(String text) {
         return Pattern.compile("#(\\w+)").matcher(text).group().trim();
-    }
+    }*/
 }

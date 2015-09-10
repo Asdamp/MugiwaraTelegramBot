@@ -405,17 +405,15 @@ abstract public class TelegramBot {
      * @param update The newly arrived {@link Update}s
      */
     public void notifyNewUpdate(Update update) {
-    	List<Update> updates=new ArrayList<Update>();
-    	updates.add(update);
-        Message message = processUpdate(update);
-        notifyNewMessage(message);
+    	Message message = processUpdate(update);
+        if(message!=null) notifyNewMessage(message);
     }
     private Message processUpdate(Update update) {
         Message msg=null;
-        if (update.getUpdateId() >= lastUpdateId){
+        //if (update.getUpdateId() > lastUpdateId){
             lastUpdateId = update.getUpdateId();
             msg=update.getMessage();
-        }
+        //}
 
         return msg;
     }
