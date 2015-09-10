@@ -27,9 +27,12 @@ dependencies {
     appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
 
 }
+
 appengine {
+    warDir = file('src/main/webapp')
     downloadSdk = true
     appcfg {
         oauth2 = true
     }
+
 }
