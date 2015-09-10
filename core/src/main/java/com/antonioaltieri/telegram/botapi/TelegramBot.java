@@ -412,7 +412,7 @@ abstract public class TelegramBot {
     }
     private Message processUpdate(Update update) {
         Message msg=null;
-        if (update.getUpdateId() > lastUpdateId){
+        if (update.getUpdateId() >= lastUpdateId){
             lastUpdateId = update.getUpdateId();
             msg=update.getMessage();
         }
