@@ -1,3 +1,9 @@
+<<<<<<< Updated upstream
 war/WEB-INF/classes
 *.class
 com.antonioaltieri.telegram.mugiwara.bot.Token.java
+=======
+/war/
+war/
+*.class
+>>>>>>> Stashed changes
