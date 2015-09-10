@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="Gradle : com.antonioaltieri.mugiwarabot:core : core-1.0.war (exploded)">
-    <output-path>$PROJECT_DIR$/out/artifacts/core/exploded/core-1.0.war</output-path>
+    <output-path>$PROJECT_DIR$/build/classes/artifacts/core/exploded/core-1.0.war</output-path>
     <properties id="gradle-properties">
       <options external-project-path="$PROJECT_DIR$/core" />
     </properties>
@@ -13,12 +13,12 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Gradle: com.antonioaltieri:telegramjavabotapi:1.1" />
-          <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.3.1" />
           <element id="library" level="project" name="Gradle: javax.servlet:servlet-api:2.5" />
+          <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.3.1" />
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/core/exploded/core-1.0.war/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/build/classes/artifacts/core/exploded/core-1.0.war/META-INF/MANIFEST.MF" />
       </element>
     </root>
   </artifact>
