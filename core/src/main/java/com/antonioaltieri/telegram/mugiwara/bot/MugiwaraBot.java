@@ -63,12 +63,13 @@ public class MugiwaraBot extends TelegramBot {
         if(params[1].charAt(0)=='@') nomeMembro=params[1].substring(1);
         else nomeMembro=params[1];
         Membro membro= ofy().load().type(Membro.class).id(nomeMembro).now();
-        if(membro==null)
-            membro=new Membro(nomeMembro);
+        if(membro==null) {
+            membro = new Membro(nomeMembro);
+        }
         membro.addBan(giorniBan);
         ofy().save().entity(membro).now();
-        membro= ofy().load().type(Membro.class).id(nomeMembro).now();
-        sendMessage(message.getChat().getId(), "Bannato fino al "+membro.getBan().toString("dd/MM/yyyy"));
+        Membro test= ofy().load().type(Membro.class).id(nomeMembro).now();
+        sendMessage(message.getChat().getId(), "Bannato fino al "+test.getBan().toString("dd/MM/yyyy"));
     }
 
     private boolean permissionCheck(Message msg) {

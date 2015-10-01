@@ -14,8 +14,7 @@ import java.util.Calendar;
 @Entity
 public class Membro {
     @Id String username;
-    @Index (IfNotNull.class)
-    LocalDate bannedUntil=null;
+    @Index (IfNotNull.class) LocalDate bannedUntil;
 
     public LocalDate getBan() {
         return bannedUntil;
@@ -40,9 +39,10 @@ public class Membro {
     }
 
     public void addBan(int days) {
-        if(bannedUntil==null)
-            bannedUntil=LocalDate.now();
-        bannedUntil=bannedUntil.plusDays(days);
+        if(bannedUntil==null) {
+            bannedUntil = LocalDate.now();
+        }
+        bannedUntil=(bannedUntil.plusDays(days));
     }
 
     public void removeBan(){
