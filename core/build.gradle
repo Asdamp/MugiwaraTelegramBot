@@ -26,6 +26,7 @@ dependencies {
     compile 'com.antonioaltieri.telegram:telegram-java-bot-api:+'
     appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.18'
     compile "com.google.appengine:appengine-api-1.0-sdk:1.9.18"
+    compile 'com.googlecode.objectify:objectify:5.+'
 
 }
 
